@@ -9,7 +9,9 @@ import (
 	"github.com/geekr-dev/go-blog-app/internal/model"
 	"github.com/geekr-dev/go-blog-app/internal/routers"
 	"github.com/geekr-dev/go-blog-app/pkg/config"
+	"github.com/geekr-dev/go-blog-app/pkg/logger"
 	"github.com/gin-gonic/gin"
+	"gopkg.in/natefinch/lumberjack.v2"
 )
 
 func init() {
@@ -22,6 +24,11 @@ func init() {
 	err = setupDBEngine()
 	if err != nil {
 		log.Fatalf("init.setupDBEngine err: %v", err)
+	}
+	// 初始化全局日志
+	err = setupLogger()
+	if err != nil {
+		log.Fatalf("init.setupLogger err: %v", err)
 	}
 }
 
@@ -69,5 +76,16 @@ func setupDBEngine() error {
 	if err != nil {
 		return err
 	}
+	return nil
+}
+
+func setupLogger() error {
+	global.Logger = logger.NewLogger(&lumberjack.Logger{
+		Filename:  global.AppConfig.LogSavePath + "/" + global.AppConfig.LogFileName + global.AppConfig.LogFileExt,
+		MaxSize:   600,
+		MaxAge:    10,
+		LocalTime: true,
+	}, "", log.LstdFlags).WithCaller(2)
+
 	return nil
 }
