@@ -6,15 +6,22 @@ import (
 	"time"
 
 	"github.com/geekr-dev/go-blog-app/global"
+	"github.com/geekr-dev/go-blog-app/internal/model"
 	"github.com/geekr-dev/go-blog-app/internal/routers"
 	"github.com/geekr-dev/go-blog-app/pkg/config"
 	"github.com/gin-gonic/gin"
 )
 
 func init() {
+	// 初始化全局配置
 	err := setupConfig()
 	if err != nil {
 		log.Fatalf("init.setupConfig err: %v", err)
+	}
+	// 初始化数据库连接
+	err = setupDBEngine()
+	if err != nil {
+		log.Fatalf("init.setupDBEngine err: %v", err)
 	}
 }
 
@@ -53,5 +60,14 @@ func setupConfig() error {
 	global.ServerConfig.ReadTimeout *= time.Second
 	global.ServerConfig.WriteTimeout *= time.Second
 
+	return nil
+}
+
+func setupDBEngine() error {
+	var err error
+	global.DBEngine, err = model.NewDBEngine(global.DatabaseConfig)
+	if err != nil {
+		return err
+	}
 	return nil
 }
