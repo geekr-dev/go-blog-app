@@ -1,3 +1,43 @@
+definitions:
+  app.Pager:
+    properties:
+      page:
+        type: integer
+      page_size:
+        type: integer
+      total_rows:
+        type: integer
+    type: object
+  errcode.Error:
+    type: object
+  model.Tag:
+    properties:
+      created_at:
+        type: string
+      created_by:
+        type: string
+      deleted_at:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      state:
+        type: integer
+      updated_at:
+        type: string
+      updated_by:
+        type: string
+    type: object
+  model.TagSwagger:
+    properties:
+      list:
+        items:
+          $ref: '#/definitions/model.Tag'
+        type: array
+      pager:
+        $ref: '#/definitions/app.Pager'
+    type: object
 info:
   contact: {}
   description: 基于 Go 构建简单博客系统
@@ -35,15 +75,15 @@ paths:
         "200":
           description: 成功
           schema:
-            type: Object
+            $ref: '#/definitions/model.TagSwagger'
         "400":
           description: 请求错误
           schema:
-            type: Object
+            $ref: '#/definitions/errcode.Error'
         "500":
           description: 服务错误
           schema:
-            type: Object
+            $ref: '#/definitions/errcode.Error'
       summary: 获取标签列表
     post:
       parameters:
@@ -77,15 +117,15 @@ paths:
         "200":
           description: 成功
           schema:
-            type: Object
+            $ref: '#/definitions/model.Tag'
         "400":
           description: 请求错误
           schema:
-            type: Object
+            $ref: '#/definitions/errcode.Error'
         "500":
           description: 服务错误
           schema:
-            type: Object
+            $ref: '#/definitions/errcode.Error'
       summary: 新增标签
   /api/v1/tags/{id}:
     delete:
@@ -101,15 +141,15 @@ paths:
         "200":
           description: 成功
           schema:
-            type: Object
+            $ref: '#/definitions/model.Tag'
         "400":
           description: 请求错误
           schema:
-            type: Object
+            $ref: '#/definitions/errcode.Error'
         "500":
           description: 服务错误
           schema:
-            type: Object
+            $ref: '#/definitions/errcode.Error'
       summary: 删除标签
     put:
       parameters:
@@ -148,14 +188,14 @@ paths:
         "200":
           description: 成功
           schema:
-            type: Object
+            $ref: '#/definitions/model.Tag'
         "400":
           description: 请求错误
           schema:
-            type: Object
+            $ref: '#/definitions/errcode.Error'
         "500":
           description: 服务错误
           schema:
-            type: Object
+            $ref: '#/definitions/errcode.Error'
       summary: 修改标签
 swagger: "2.0"

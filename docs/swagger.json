@@ -50,19 +50,19 @@
                     "200": {
                         "description": "成功",
                         "schema": {
-                            "type": "Object"
+                            "$ref": "#/definitions/model.TagSwagger"
                         }
                     },
                     "400": {
                         "description": "请求错误",
                         "schema": {
-                            "type": "Object"
+                            "$ref": "#/definitions/errcode.Error"
                         }
                     },
                     "500": {
                         "description": "服务错误",
                         "schema": {
-                            "type": "Object"
+                            "$ref": "#/definitions/errcode.Error"
                         }
                     }
                 }
@@ -112,19 +112,19 @@
                     "200": {
                         "description": "成功",
                         "schema": {
-                            "type": "Object"
+                            "$ref": "#/definitions/model.Tag"
                         }
                     },
                     "400": {
                         "description": "请求错误",
                         "schema": {
-                            "type": "Object"
+                            "$ref": "#/definitions/errcode.Error"
                         }
                     },
                     "500": {
                         "description": "服务错误",
                         "schema": {
-                            "type": "Object"
+                            "$ref": "#/definitions/errcode.Error"
                         }
                     }
                 }
@@ -183,19 +183,19 @@
                     "200": {
                         "description": "成功",
                         "schema": {
-                            "type": "Object"
+                            "$ref": "#/definitions/model.Tag"
                         }
                     },
                     "400": {
                         "description": "请求错误",
                         "schema": {
-                            "type": "Object"
+                            "$ref": "#/definitions/errcode.Error"
                         }
                     },
                     "500": {
                         "description": "服务错误",
                         "schema": {
-                            "type": "Object"
+                            "$ref": "#/definitions/errcode.Error"
                         }
                     }
                 }
@@ -218,21 +218,83 @@
                     "200": {
                         "description": "成功",
                         "schema": {
-                            "type": "Object"
+                            "$ref": "#/definitions/model.Tag"
                         }
                     },
                     "400": {
                         "description": "请求错误",
                         "schema": {
-                            "type": "Object"
+                            "$ref": "#/definitions/errcode.Error"
                         }
                     },
                     "500": {
                         "description": "服务错误",
                         "schema": {
-                            "type": "Object"
+                            "$ref": "#/definitions/errcode.Error"
                         }
                     }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "app.Pager": {
+            "type": "object",
+            "properties": {
+                "page": {
+                    "type": "integer"
+                },
+                "page_size": {
+                    "type": "integer"
+                },
+                "total_rows": {
+                    "type": "integer"
+                }
+            }
+        },
+        "errcode.Error": {
+            "type": "object"
+        },
+        "model.Tag": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "created_by": {
+                    "type": "string"
+                },
+                "deleted_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "state": {
+                    "type": "integer"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "updated_by": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.TagSwagger": {
+            "type": "object",
+            "properties": {
+                "list": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.Tag"
+                    }
+                },
+                "pager": {
+                    "$ref": "#/definitions/app.Pager"
                 }
             }
         }
