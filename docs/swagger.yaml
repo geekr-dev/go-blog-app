@@ -10,6 +10,40 @@ definitions:
     type: object
   errcode.Error:
     type: object
+  model.Article:
+    properties:
+      content:
+        type: string
+      created_at:
+        type: string
+      created_by:
+        type: string
+      deleted_at:
+        type: string
+      desc:
+        type: string
+      feature_image:
+        type: string
+      id:
+        type: integer
+      state:
+        type: integer
+      title:
+        type: string
+      updated_at:
+        type: string
+      updated_by:
+        type: string
+    type: object
+  model.ArticleSwagger:
+    properties:
+      list:
+        items:
+          $ref: '#/definitions/model.Article'
+        type: array
+      pager:
+        $ref: '#/definitions/app.Pager'
+    type: object
   model.Tag:
     properties:
       created_at:
@@ -45,6 +79,239 @@ info:
   title: Blog App
   version: "1.0"
 paths:
+  /api/v1/articles:
+    get:
+      parameters:
+      - description: 标签ID
+        in: query
+        name: tag_id
+        type: integer
+      - default: 1
+        description: 状态
+        enum:
+        - 0
+        - 1
+        in: query
+        name: state
+        type: integer
+      - description: 页码
+        in: query
+        name: page
+        type: integer
+      - description: 每页数量
+        in: query
+        name: page_size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            $ref: '#/definitions/model.ArticleSwagger'
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+        "500":
+          description: 服务错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+      summary: 获取文章列表
+    post:
+      parameters:
+      - description: 文章标题
+        in: body
+        maxLength: 100
+        minLength: 3
+        name: title
+        required: true
+        schema:
+          type: string
+      - description: 文章摘要
+        in: body
+        maxLength: 255
+        minLength: 2
+        name: desc
+        schema:
+          type: string
+      - description: 文章内容
+        in: body
+        name: content
+        required: true
+        schema:
+          type: string
+      - description: 封面图片
+        in: body
+        maxLength: 255
+        name: feature_image
+        required: true
+        schema:
+          type: string
+      - default: 1
+        description: 状态
+        enum:
+        - 0
+        - 1
+        in: body
+        name: state
+        schema:
+          type: integer
+      - description: 标签ID
+        in: body
+        name: tag_id
+        required: true
+        schema:
+          type: integer
+      - description: 作者
+        in: body
+        maxLength: 100
+        minLength: 3
+        name: created_by
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            $ref: '#/definitions/model.Article'
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+        "500":
+          description: 服务错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+      summary: 新增文章
+  /api/v1/articles/{id}:
+    delete:
+      parameters:
+      - description: 文章ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            $ref: '#/definitions/model.Article'
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+        "500":
+          description: 服务错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+      summary: 删除文章
+    get:
+      parameters:
+      - description: 文章ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - default: 1
+        description: 状态
+        enum:
+        - 0
+        - 1
+        in: query
+        name: state
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            $ref: '#/definitions/model.Article'
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+        "500":
+          description: 服务错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+      summary: 获取文章详情
+    put:
+      parameters:
+      - description: 文章ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 文章标题
+        in: body
+        maxLength: 100
+        minLength: 3
+        name: title
+        schema:
+          type: string
+      - description: 文章摘要
+        in: body
+        maxLength: 255
+        minLength: 2
+        name: desc
+        schema:
+          type: string
+      - description: 文章内容
+        in: body
+        name: content
+        schema:
+          type: string
+      - description: 封面图片
+        in: body
+        maxLength: 255
+        name: feature_image
+        schema:
+          type: string
+      - default: 1
+        description: 状态
+        enum:
+        - 0
+        - 1
+        in: body
+        name: state
+        schema:
+          type: integer
+      - description: 标签ID
+        in: body
+        name: tag_id
+        schema:
+          type: integer
+      - description: 编辑
+        in: body
+        maxLength: 100
+        minLength: 3
+        name: updated_by
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            $ref: '#/definitions/model.Article'
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+        "500":
+          description: 服务错误
+          schema:
+            $ref: '#/definitions/errcode.Error'
+      summary: 更新文章
   /api/v1/tags:
     get:
       parameters:

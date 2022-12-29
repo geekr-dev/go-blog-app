@@ -11,13 +11,18 @@ import (
 	"gorm.io/gorm/logger"
 )
 
+const (
+	STATE_CLOSE = iota
+	STATE_OPEN
+)
+
 type Model struct {
-	ID        uint32         `gorm:"primary_key" json:"id"`
-	CreatedBy string         `json:"created_by"`
-	UpdatedBy string         `json:"updated_by"`
-	CreatedAt time.Time      `json:"created_at"`
-	UpdatedAt time.Time      `json:"updated_at"`
-	DeletedAt gorm.DeletedAt `json:"deleted_at"`
+	ID        uint32         `gorm:"primary_key" json:"id,omitempty"`
+	CreatedBy string         `json:"created_by,omitempty"`
+	UpdatedBy string         `json:"updated_by,omitempty"`
+	CreatedAt time.Time      `json:"created_at,omitempty"`
+	UpdatedAt time.Time      `json:"updated_at,omitempty"`
+	DeletedAt gorm.DeletedAt `json:"deleted_at,omitempty"`
 }
 
 func NewDBEngine(dbConfig *config.DatabaseConfig) (*gorm.DB, error) {

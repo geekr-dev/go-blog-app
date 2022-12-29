@@ -15,6 +15,15 @@ func (t Tag) TableName() string {
 	return "tags"
 }
 
+func (t Tag) Get(db *gorm.DB) (Tag, error) {
+	var tag Tag
+	err := db.Where("id = ? AND state = ? AND deleted_at IS NULL", t.Model.ID, t.State).First(&tag).Error
+	if err != nil && err != gorm.ErrRecordNotFound {
+		return tag, err
+	}
+	return tag, nil
+}
+
 func (t Tag) Count(db *gorm.DB) (int64, error) {
 	var count int64
 	if t.Name != "" {
