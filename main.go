@@ -30,6 +30,7 @@ func init() {
 	if err != nil {
 		log.Fatalf("init.setupLogger err: %v", err)
 	}
+	// global.Logger.Infof("%s inited", "blog-app")
 }
 
 func main() {
@@ -80,12 +81,15 @@ func setupDBEngine() error {
 }
 
 func setupLogger() error {
-	global.Logger = logger.NewLogger(&lumberjack.Logger{
-		Filename:  global.AppConfig.LogSavePath + "/" + global.AppConfig.LogFileName + global.AppConfig.LogFileExt,
-		MaxSize:   600,
-		MaxAge:    10,
-		LocalTime: true,
-	}, "", log.LstdFlags).WithCaller(2)
-
+	global.Logger = logger.NewLogger(
+		&lumberjack.Logger{
+			Filename:  global.AppConfig.LogSavePath + "/" + global.AppConfig.LogFileName + global.AppConfig.LogFileExt,
+			MaxSize:   600,
+			MaxAge:    10,
+			LocalTime: true,
+		},
+		"",
+		log.LstdFlags,
+	).WithCaller(2)
 	return nil
 }
