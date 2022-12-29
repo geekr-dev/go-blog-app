@@ -33,6 +33,10 @@ func init() {
 	// global.Logger.Infof("%s inited", "blog-app")
 }
 
+// @title Blog App
+// @version 1.0
+// @description 基于 Go 构建简单博客系统
+// @termsOfService https://github.com/geekr-dev/go-blog-app
 func main() {
 	gin.SetMode(global.ServerConfig.RunMode)
 	router := routers.NewRouter()
