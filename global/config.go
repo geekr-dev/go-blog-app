@@ -10,6 +10,7 @@ var (
 	AppConfig      *config.AppConfig
 	DatabaseConfig *config.DatabaseConfig
 	JWTConfig      *config.JWTConfig
+	EmailConfig    *config.EmailConfig
 
 	Logger *logger.Logger
 )

@@ -15,8 +15,8 @@ import (
 
 func NewRouter() *gin.Engine {
 	r := gin.New()
-	r.Use(gin.Logger())
-	r.Use(gin.Recovery())
+	r.Use(middleware.AccessLog())
+	r.Use(middleware.Recovery())
 	r.Use(middleware.Translations())
 
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))

@@ -44,6 +44,15 @@ type JWTConfig struct {
 	Expire time.Duration
 }
 
+type EmailConfig struct {
+	Host     string
+	Port     int
+	UserName string
+	Password string
+	IsSSL    bool
+	From     string
+}
+
 type Config struct {
 	*viper.Viper
 }
