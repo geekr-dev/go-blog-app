@@ -9,6 +9,7 @@ var (
 	ServerConfig   *config.ServerConfig
 	AppConfig      *config.AppConfig
 	DatabaseConfig *config.DatabaseConfig
+	JWTConfig      *config.JWTConfig
 
 	Logger *logger.Logger
 )

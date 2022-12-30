@@ -38,6 +38,12 @@ type DatabaseConfig struct {
 	MaxOpenConns int
 }
 
+type JWTConfig struct {
+	Secret string
+	Issuer string
+	Expire time.Duration
+}
+
 type Config struct {
 	*viper.Viper
 }
