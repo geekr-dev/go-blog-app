@@ -10,6 +10,7 @@ import (
 	"github.com/geekr-dev/go-blog-app/internal/routers"
 	"github.com/geekr-dev/go-blog-app/pkg/config"
 	"github.com/geekr-dev/go-blog-app/pkg/logger"
+	"github.com/geekr-dev/go-blog-app/pkg/tracer"
 	"github.com/gin-gonic/gin"
 	"gopkg.in/natefinch/lumberjack.v2"
 )
@@ -31,6 +32,11 @@ func init() {
 		log.Fatalf("init.setupLogger err: %v", err)
 	}
 	// global.Logger.Infof("%s inited", "blog-app")
+	// 初始化链路追踪
+	err = setupTracer()
+	if err != nil {
+		log.Fatalf("init.setupTracer err: %v", err)
+	}
 }
 
 // @title Blog App
@@ -104,5 +110,14 @@ func setupLogger() error {
 		"",
 		log.LstdFlags,
 	).WithCaller(2)
+	return nil
+}
+
+func setupTracer() error {
+	jaegerTracer, _, err := tracer.NewJaegerTracer("go-blog-app", "127.0.0.1:6831")
+	if err != nil {
+		return err
+	}
+	global.Tracer = jaegerTracer
 	return nil
 }
