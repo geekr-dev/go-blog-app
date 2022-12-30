@@ -31,7 +31,8 @@ func NewRouter() *gin.Engine {
 		r.Use(middleware.AccessLog())
 		r.Use(middleware.Recovery())
 	}
-	r.Use(middleware.RateLimiter(methodLimiters)) // 限流控制
+	r.Use(middleware.RateLimiter(methodLimiters))      // 限流控制
+	r.Use(middleware.ContextTimeout(30 * time.Second)) // 超时控制
 	r.Use(middleware.Translations())
 
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
