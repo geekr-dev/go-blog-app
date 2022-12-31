@@ -3,8 +3,11 @@ package config
 import (
 	"time"
 
+	"github.com/fsnotify/fsnotify"
 	"github.com/spf13/viper"
 )
+
+var sections = make(map[string]interface{})
 
 type ServerConfig struct {
 	RunMode      string
@@ -67,7 +70,9 @@ func NewConfig() (*Config, error) {
 	if err != nil {
 		return nil, err
 	}
-	return &Config{v}, nil
+	c := &Config{v}
+	c.WatchConfigChange()
+	return c, nil
 }
 
 func (c *Config) ReadSection(k string, v interface{}) error {
@@ -75,5 +80,27 @@ func (c *Config) ReadSection(k string, v interface{}) error {
 	if err != nil {
 		return err
 	}
+	if _, ok := sections[k]; !ok {
+		sections[k] = v
+	}
 	return nil
+}
+
+func (c *Config) ReloadAllSection() error {
+	for k, v := range sections {
+		err := c.ReadSection(k, v)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func (c *Config) WatchConfigChange() {
+	go func() {
+		c.WatchConfig()
+		c.OnConfigChange(func(e fsnotify.Event) {
+			_ = c.ReloadAllSection()
+		})
+	}()
 }
