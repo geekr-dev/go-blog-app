@@ -9,6 +9,7 @@ import (
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
+	gormopentracing "gorm.io/plugin/opentracing"
 )
 
 const (
@@ -42,11 +43,15 @@ func NewDBEngine(dbConfig *config.DatabaseConfig) (*gorm.DB, error) {
 	if err != nil {
 		return nil, err
 	}
+	// 设置日志模式
 	if global.ServerConfig.RunMode == "debug" {
 		db.Logger.LogMode(logger.Info)
 	}
+	// 设置闲置/最大连接数
 	sqlDB, _ := db.DB()
 	sqlDB.SetMaxIdleConns(dbConfig.MaxIdleConns)
 	sqlDB.SetMaxOpenConns(dbConfig.MaxOpenConns)
+	// 设置链路追踪
+	db.Use(gormopentracing.New())
 	return db, nil
 }

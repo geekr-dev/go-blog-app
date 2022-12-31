@@ -21,11 +21,6 @@ func init() {
 	if err != nil {
 		log.Fatalf("init.setupConfig err: %v", err)
 	}
-	// 初始化数据库连接
-	err = setupDBEngine()
-	if err != nil {
-		log.Fatalf("init.setupDBEngine err: %v", err)
-	}
 	// 初始化全局日志
 	err = setupLogger()
 	if err != nil {
@@ -36,6 +31,11 @@ func init() {
 	err = setupTracer()
 	if err != nil {
 		log.Fatalf("init.setupTracer err: %v", err)
+	}
+	// 初始化数据库连接
+	err = setupDBEngine()
+	if err != nil {
+		log.Fatalf("init.setupDBEngine err: %v", err)
 	}
 }
 
