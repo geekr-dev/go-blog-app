@@ -14,6 +14,7 @@ type ServerConfig struct {
 }
 
 type AppConfig struct {
+	Name                 string
 	DefaultPageSize      int
 	MaxPageSize          int
 	LogSavePath          string

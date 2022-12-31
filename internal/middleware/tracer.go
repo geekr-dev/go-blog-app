@@ -6,6 +6,7 @@ import (
 	"github.com/geekr-dev/go-blog-app/global"
 	"github.com/gin-gonic/gin"
 	"github.com/opentracing/opentracing-go"
+	"github.com/uber/jaeger-client-go"
 )
 
 func Tracing() gin.HandlerFunc {
@@ -27,6 +28,17 @@ func Tracing() gin.HandlerFunc {
 			)
 		}
 		defer span.Finish()
+
+		var traceID string
+		var spanID string
+		var spanContext = span.Context()
+		switch spanContext.(type) {
+		case jaeger.SpanContext:
+			traceID = spanContext.(jaeger.SpanContext).TraceID().String()
+			spanID = spanContext.(jaeger.SpanContext).SpanID().String()
+		}
+		c.Set("X-Trace-ID", traceID)
+		c.Set("X-Span-ID", spanID)
 		c.Request = c.Request.WithContext(ctx)
 		c.Next()
 	}

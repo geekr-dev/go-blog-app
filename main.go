@@ -114,7 +114,7 @@ func setupLogger() error {
 }
 
 func setupTracer() error {
-	jaegerTracer, _, err := tracer.NewJaegerTracer("go-blog-app", "127.0.0.1:6831")
+	jaegerTracer, _, err := tracer.NewJaegerTracer(global.AppConfig.Name, "localhost:6831")
 	if err != nil {
 		return err
 	}

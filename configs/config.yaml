@@ -4,6 +4,7 @@ Server:
   ReadTimeout: 60
   WriteTimeout: 60
 App:
+  Name: go-blog-app
   DefaultPageSize: 10
   MaxPageSize: 100
   LogSavePath: storage/logs
